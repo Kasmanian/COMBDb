@@ -4,7 +4,7 @@ class Database:
 
 
   def __query(func):
-    '''#Decorator for grabbing/closing a cursor and catching database errors.'''
+    '''Decorator for grabbing/closing a cursor and catching database errors.'''
     def query(self, *args, **kwargs):
         try:
           cursor = self.db.cursor()
@@ -19,9 +19,9 @@ class Database:
 
 
   def connect(self, accdbPath: str):
-    '''#Uses given path to accdb file and establishes a connection.
+    '''Uses given path to accdb file and establishes a connection.
 
-    Args:
+    Parameters:
       accdbPath: the full path to the accdb file
     '''
     try:
@@ -33,15 +33,15 @@ class Database:
 
 
   def close(self):
-    '''#Closes the connection to the database if one exists.'''
+    '''Closes the connection to the database if one exists.'''
     if self.db: self.db.close()
 
 
   @__query
   def insert(self, cursor: pyodbc.Cursor, table: str, fields: tuple, *args: any):
-    '''#Stylized INSERT for COMBDb's database file.
+    '''Stylized INSERT for COMBDb's database file.
     
-    Args:
+    Parameters:
       cursor: the cursor given by the query wrapper (IGNORE LIKE "self")
       table: the name of the specific table to query
       fields: a tuple of strings listing the table's chosen fields
@@ -56,9 +56,9 @@ class Database:
 
   @__query
   def update(self, cursor: pyodbc.Cursor, table: str, fields: tuple, reqs: str, *args: any):
-    '''#Stylized UPDATE for COMBDb's database file.
+    '''Stylized UPDATE for COMBDb's database file.
     
-    Args:
+    Parameters:
       cursor: the cursor given by the query wrapper (IGNORE LIKE "self")
       table: the name of the specific table to query
       fields: a tuple of strings listing the table's chosen fields
@@ -73,9 +73,9 @@ class Database:
 
   @__query
   def select(self, cursor: pyodbc.Cursor, table: str, fields: tuple, reqs: str, count: int):
-    '''#Stylized SELECT for COMBDb's database file.
+    '''Stylized SELECT for COMBDb's database file.
     
-    Args:
+    Parameters:
       cursor: the cursor given by the query wrapper (IGNORE LIKE "self")
       table: the name of the specific table to query
       fields: a tuple of strings listing the table's chosen fields
@@ -95,9 +95,9 @@ class Database:
 
 
   def generateSampleID(self, yy: int):
-    '''#Generates a new non-colliding sample ID sourced from an index in the database.
+    '''Generates a new non-colliding sample ID sourced from an index in the database.
     
-    Args:
+    Parameters:
       yy: the current year (in YY format)
     '''
     fetchID = int(self.select('[IDKeys]', ('[ID]'), '[Type]="Sample"', 1))
@@ -107,9 +107,9 @@ class Database:
 
 
   def generateHexID(self, type: str):
-    '''#Generates a new non-colliding hex ID sourced from an index in the database.
+    '''Generates a new non-colliding hex ID sourced from an index in the database.
     
-    Args:
+    Parameters:
       type: the name of the field using the hex ID
     '''
     fetchID = int(self.select('[IDKeys]', ('[ID]'), f'[Type]="{type}"', 1), 16)

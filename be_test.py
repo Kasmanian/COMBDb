@@ -1,4 +1,6 @@
+import shutil
 import unittest
+
 from db import Database
 
 class TestDatabase(unittest.TestCase):
