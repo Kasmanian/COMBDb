@@ -130,3 +130,6 @@ dmypy.json
 
 # Database test files
 *_test.accdb
+
+# Database busy files
+*.laccdb
