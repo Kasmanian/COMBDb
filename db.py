@@ -15,6 +15,7 @@ class Database:
         return result
       except (Exception, pyodbc.Error) as e:
         self.error = e
+        print(str(e))
       finally:
         if cursor: cursor.close()
     return query
@@ -49,8 +50,8 @@ class Database:
       fields: a tuple of strings listing the table's chosen fields
       *args: values to be inserted into the table's chosen fields
     """
-    params = ",".join(fields)
-    values = "?"+(len(fields)-1)*",?"
+    params = ", ".join(fields)
+    values = "?"+(len(fields)-1)*", ?"
     query = f"INSERT INTO {table}({params}) VALUES({values})"
     cursor.execute(query, *args)
     return True
@@ -88,13 +89,17 @@ class Database:
     reqs = f" WHERE {reqs}" if reqs is not None else None
     query = f"SELECT {params} FROM {table}{reqs}"
     cursor.execute(query)
+    fields = tuple(map(lambda field: field.strip('[]'), fields))
     if count == 1:
-      return cursor.fetchone()[0]
+      return dict(zip(fields, list(cursor.fetchone())))
     elif count > 1 and count < float("inf"):
-      return cursor.fetchmany(count)
+      rows = cursor.fetchmany(count)
     else:
-      return cursor.fetchall()
-
+      rows = cursor.fetchall()
+    dataExport = []
+    for row in rows:
+      dataExport.append(dict(zip(fields, list(row))))
+    return dataExport
 
   def generateSampleID(self, year: int):
     """Generates a new non-colliding sample ID sourced from an index in the database.
@@ -103,7 +108,7 @@ class Database:
       year: the current year
     """
     yy = year-2000
-    fetchID = int(self.select("[IDKeys]", ("[ID]",), "[Type]='Sample'", 1))
+    fetchID = int(self.select("[IDKeys]", ("[ID]",), "[Type]='Sample'", 1)["ID"])
     catchID = (yy*10000)+1 if yy-(fetchID//10000)>0 else fetchID
     self.update("[IDkeys]", ("[ID]",), "[Type]='Sample'", str(catchID+1))
     return str(catchID)
@@ -115,7 +120,7 @@ class Database:
     Parameters:
       type: the name of the field using the hex ID
     """
-    fetchID = int(self.select("[IDKeys]", ("[ID]",), f"[Type]='{type}'", 1), 16)
+    fetchID = int(self.select("[IDKeys]", ("[ID]",), f"[Type]='{type}'", 1)["ID"], 16)
     hexSize = 3 if type == "Antibiotic" or type == "Bacteria" else 1
     catchID = hex(fetchID+1)[2:].zfill(hexSize)
     self.update("[IDkeys]", ("[ID]",), f"[Type]='{type}'", catchID)
