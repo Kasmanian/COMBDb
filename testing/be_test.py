@@ -21,8 +21,8 @@ class TestDatabase(unittest.TestCase):
 
     def test_connect_passed(self):
         cwd = os.getcwd()
-        shutil.copyfile(cwd+r'\COMBDb\COMBDb.accdb', cwd+r'\COMBDb\testing\COMBDb_test.accdb')
-        isConnected = db.connect(cwd+r'\COMBDb\testing\COMBDb_test.accdb')
+        shutil.copyfile(cwd+r'\COMBDb.accdb', cwd+r'\testing\COMBDb_test.accdb')
+        isConnected = db.connect(cwd+r'\testing\COMBDb_test.accdb')
         self.assertEqual(isConnected, True, 'Connection should return True')
 
 
