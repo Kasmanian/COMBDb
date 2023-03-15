@@ -69,7 +69,20 @@ class TestDatabase(unittest.TestCase):
 
 
     def test_single_insert_CAT(self):
-        pass
+        table = '[CATs]'
+        fields = (
+            '[SampleID]', '[ChartID]', '[Clinician]', '[First]', '[Last]', '[Received]', '[Collected]', '[Reported]',
+            '[Volume (ml)]', '[Time (min)]', '[Initial (pH)]', '[Flow Rate (ml/min)]', '[Buffering Capacity (pH)]',
+            '[Strep mutans (CFU/ml)]', '[Lactobacillus (CFU/ml)]', '[Tech]', '[Comments]', '[Notes]',
+            '[Type]', '[Rejection Date]', '[Rejection Reason]'
+        )
+        crntDate = date.today()
+        sampleID = db.generateSampleID(crntDate.year)
+        status = db.insert(
+            table, fields, sampleID, '0000a', 0, 'John', 'Doe', crntDate, crntDate, crntDate,
+            0, 0, 0, 0, 0, 0, 0, 0, 'Hello', 'World', 'Test', crntDate, 'N/A'
+        )
+        self.assertEqual(status, True, 'Insert should return "True"')
 
 
     def test_single_insert_culture(self):
@@ -89,7 +102,19 @@ class TestDatabase(unittest.TestCase):
 
 
     def test_single_insert_waterline(self):
-        pass
+        table = '[Waterlines]'
+        fields = (
+            '[SampleID]', '[ChartID]', '[Clinician]', '[First]', '[Last]', 
+            '[Received]', '[Collected]', '[Reported]', '[Aerobic Results]', '[Anaerobic Results]',
+            '[Tech]', '[Comments]', '[Notes]', '[Type]', '[Direct Smear]', '[Rejection Date]', '[Rejection Reason]'
+        )
+        crntDate = date.today()
+        sampleID = db.generateSampleID(crntDate.year)
+        status = db.insert(
+            table, fields, sampleID, '0000a', 0, 'John', 'Doe', crntDate, crntDate, crntDate,
+            'N/A', 'N/A', 0, 'Hello', 'World', 'Test', '...', crntDate, 'N/A'
+        )
+        self.assertEqual(status, True, 'Insert should return "True"')
 
 
 if __name__ == '__main__':

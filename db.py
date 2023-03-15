@@ -43,7 +43,7 @@ class Database:
   @__query
   def insert(self, cursor: pyodbc.Cursor, table: str, fields: tuple, *args: any):
     """Stylized INSERT for COMBDb's database file.
-    
+
     Parameters:
       cursor: the cursor given by the query wrapper (IGNORE LIKE "self")
       table: the name of the specific table to query
@@ -60,7 +60,7 @@ class Database:
   @__query
   def update(self, cursor: pyodbc.Cursor, table: str, fields: tuple, reqs: str, *args: any):
     """Stylized UPDATE for COMBDb's database file.
-    
+
     Parameters:
       cursor: the cursor given by the query wrapper (IGNORE LIKE "self")
       table: the name of the specific table to query
@@ -77,7 +77,7 @@ class Database:
   @__query
   def select(self, cursor: pyodbc.Cursor, table: str, fields: tuple, reqs: str, count: int):
     """Stylized SELECT for COMBDb's database file.
-    
+
     Parameters:
       cursor: the cursor given by the query wrapper (IGNORE LIKE "self")
       table: the name of the specific table to query
@@ -103,7 +103,7 @@ class Database:
 
   def generateSampleID(self, year: int):
     """Generates a new non-colliding sample ID sourced from an index in the database.
-    
+
     Parameters:
       year: the current year
     """
@@ -116,7 +116,7 @@ class Database:
 
   def generateHexID(self, type: str):
     """Generates a new non-colliding hex ID sourced from an index in the database.
-    
+
     Parameters:
       type: the name of the field using the hex ID
     """
