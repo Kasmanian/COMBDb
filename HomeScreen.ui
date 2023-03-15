@@ -1,0 +1,19 @@
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+
+Rectangle {
+    id: body
+    width: 1920
+    height: 1080
+
+    Text {
+        id: welcome
+        width: 432
+        height: 64
+        text: qsTr("Welcome!")
+        anchors.verticalCenter: parent.verticalCenter
+        font.pixelSize: 48
+        horizontalAlignment: Text.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+}
