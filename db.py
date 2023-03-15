@@ -89,7 +89,7 @@ class Database:
     reqs = f" WHERE {reqs}" if reqs is not None else None
     query = f"SELECT {params} FROM {table}{reqs}"
     cursor.execute(query)
-    fields = tuple(map(lambda field: field.strip('[]'), fields))
+    fields = tuple(map(lambda field: field.strip("[]"), fields))
     if count == 1:
       return dict(zip(fields, list(cursor.fetchone())))
     elif count > 1 and count < float("inf"):
