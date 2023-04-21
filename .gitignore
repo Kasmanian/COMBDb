@@ -133,3 +133,6 @@ dmypy.json
 
 # Database busy files
 *.laccdb
+
+# Locally dependant workspace files
+workspace/envar.json
