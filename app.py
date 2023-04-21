@@ -1,67 +1,57 @@
-import os
-import sys
+import tkinter as tk
+from tkinter import ttk
 
-from PySide6.QtWidgets import QApplication, QWidget
-from PySide6.QtQuick import QQuickView
-from PySide6.QtCore import Qt, QObject, QUrl
-from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtGui import QGuiApplication
+import _modules as m
+import constants as const
+import widgets as tkw
+from database import Database
 
-# if __name__ == '__main__':
 
-#     loader = QUiLoader()
-#     app = QApplication(sys.argv)
-#     engine = QQmlApplicationEngine('App.qml')
-#     # engine.screenLoader.source = 'HomeScreen.ui.qml'
-#     window = engine.rootObjects()[0]
-#     #window.children()[1].setProperty('source', 'HomeScreen.ui.qml')
-#     # [0].findChild(QObject, 'body')
-#     print(window.children()[1])
-#     #window.show()
-#     sys.exit(app.exec())
-
-class LoginScreen(QQuickView):
-    def __init__(self, app):
-        super(LoginScreen, self).__init__()
-        self.app = app
-        self.setResizeMode(QQuickView.SizeRootObjectToView)
-        qmlFile = os.path.join(os.path.dirname(__file__), 'LoginScreen.ui.qml')
-        self.setSource(QUrl.fromLocalFile(os.path.abspath(qmlFile)))
-        loginButton = self.findChild(QObject, "loginButton")
-        loginButton.clicked.connect(self.successful_login)
-
-    def successful_login(self):
-        qmlFile = os.path.join(os.path.dirname(__file__), 'HomeScreen.ui.qml')
-        self.setSource(QUrl.fromLocalFile(os.path.abspath(qmlFile)))
-
-class HomeScreen(QQuickView):
-    def __init__(self, app):
-        super(HomeScreen, self).__init__()
-        self.app = app
-        self.setResizeMode(QQuickView.SizeRootObjectToView)
-        qmlFile = os.path.join(os.path.dirname(__file__), 'HomeScreen.ui.qml')
-        self.setSource(QUrl.fromLocalFile(os.path.abspath(qmlFile)))
-
-class Document(QQuickView):
-    def __init__(self, app):
-        super(Document, self).__init__()
-        self.setResizeMode(QQuickView.SizeRootObjectToView)
-        self.app = app
-        self.loadUI('LoginScreen.ui.qml')
-
-    def loadUI(self, fileName):
-        file = os.path.join(os.path.dirname(__file__), fileName)
-        self.setSource(QUrl.fromLocalFile(os.path.abspath(file)))
-
-class App(QGuiApplication):
+class App(tk.Tk):
     def __init__(self):
-        super(App, self).__init__(sys.argv)
-        self.document = LoginScreen(self)
-        if self.document.status() == QQuickView.Error:
-            sys.exit(-1)
-        self.document.showMaximized()
-        sys.exit(self.exec())
+        tk.Tk.__init__(self)
+        self.__database = Database()
+        self.__mainframe = None
+        self.title(const.TITLE)
+        self.EM = const.EM
+
+        # database validation & login
+        self.__inMainloop = False
+        self.run()
+
+    def reframe(self, frame):
+        if self.__mainframe is not None:
+            self.__mainframe.destroy()
+        self.__mainframe = frame(self)
+        self.__mainframe.pack()
+
+    def run(self):
+        # get database
+        db = self.__database
+
+        # validate json and grab database path from it
+        m.validate_json(const.ENVAR_PATH)
+        pathToDatabase = m.read_from_json(
+            const.ENVAR_PATH, const.DB_JSON_KEYPATH)
+
+        # validate database file
+        if db.connect(pathToDatabase):
+            print(f"Connected! Current path is '{pathToDatabase}'")
+            # move to login screen
+            self.reframe(tkw.LoginFrame)
+        else:
+            print(f"Not connected! Current path is '{pathToDatabase}'")
+            # move to database browser
+            self.reframe(tkw.DatabaseBrowserFrame)
+
+        if not self.__inMainloop:
+            self.__inMainloop = True
+            self.mainloop()
+
+
+def main():
+    App()
+
 
 if __name__ == '__main__':
-    app = App()
+    main()
