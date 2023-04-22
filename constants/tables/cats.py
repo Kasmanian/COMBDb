@@ -1,51 +1,51 @@
 from .__utils import *
 
 # table definition
-CAT_TABLE_NAME = 'CATs'
+CAT_TABLE_NAME = "CATs"
 CAT_RAW_FIELDS = (
-    'Entry',
+    "Entry",
     # AutoNumber: unique incrementing entry #
-    'SampleID',
+    "SampleID",
     # Short Text: string conversion of the sample #, formatted as yy####
-    'ChartID',
+    "ChartID",
     # Short Text: unique string ID of the patient
-    'Clinician',
+    "Clinician",
     # Number: 'Entry' field of the clinician (from Clinician table)
-    'First',
+    "First",
     # Short Text: first name of the patient
-    'Last',
+    "Last",
     # Short Text: last name of the patient
-    'Tech',
+    "Tech",
     # Number: 'Entry' field of this entry's last editing tech (from Tech table)
-    'Collected',
+    "Collected",
     # Date/Time: date the sample was collected
-    'Received',
+    "Received",
     # Date/Time: date the sample was received
-    'Reported',
+    "Reported",
     # Date/TIme: date the sample was reported
-    'Volume (ml)',
+    "Volume (ml)",
     # Number: volume recorded in milliliters
-    'Time (min)',
+    "Time (min)",
     # Number: time recorded in minutes
-    'Initial (pH)',
+    "Initial (pH)",
     # Number: initial pH
-    'Flow Rate (ml/min)',
+    "Flow Rate (ml/min)",
     # Number: volume/time recorded in milliliters per minutes
-    'Buffering Capacity (pH)',
+    "Buffering Capacity (pH)",
     # Number: buffering capacity recorded in pH
-    'Strep mutans (CFU/ml)',
+    "Strep mutans (CFU/ml)",
     # Number: count of Strep mutans recorded in colony-forming units per milliliter
-    'Lactobacillus (CFU/ml)',
+    "Lactobacillus (CFU/ml)",
     # Number: count of Lactobacillus recorded in colony-forming units per milliliter
-    'Comments',
+    "Comments",
     # Long Text: comments to be seen on printed reports
-    'Notes',
+    "Notes",
     # Long Text: notes to be seen internally or on order forms
-    'Type',
+    "Type",
     # Short Text: ???
-    'Rejection Date',
+    "Rejection Date",
     # Date/Time: date of rejection
-    'Rejection Reason',
+    "Rejection Reason",
     # Long Text: explanation for rejection
 )
 

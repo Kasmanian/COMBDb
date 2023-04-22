@@ -1,2 +1,2 @@
-'''Defines metadata for the application.'''
-TITLE = 'COMBDb'
+"""Defines metadata for the application."""
+TITLE = "COMBDb"

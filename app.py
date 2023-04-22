@@ -19,6 +19,17 @@ class App(tk.Tk):
         self.__inMainloop = False
         self.run()
 
+    def get_database_path(self):
+        # validate json and get database path from it
+        m.validate_json(const.ENVAR_PATH)
+        pathToDatabase = m.read_from_json(const.ENVAR_PATH, const.DB_JSON_KEYPATH)
+        return pathToDatabase
+
+    def set_database_path(self, path):
+        # validate json and set database path
+        m.validate_json(const.ENVAR_PATH)
+        m.write_to_json(const.ENVAR_PATH, const.DB_JSON_KEYPATH, path)
+
     def reframe(self, frame):
         if self.__mainframe is not None:
             self.__mainframe.destroy()
@@ -26,23 +37,20 @@ class App(tk.Tk):
         self.__mainframe.pack()
 
     def run(self):
-        # get database
+        # get database and database file path
         db = self.__database
-
-        # validate json and grab database path from it
-        m.validate_json(const.ENVAR_PATH)
-        pathToDatabase = m.read_from_json(
-            const.ENVAR_PATH, const.DB_JSON_KEYPATH)
+        pathToDatabase = self.get_database_path()
 
         # validate database file
         if db.connect(pathToDatabase):
-            print(f"Connected! Current path is '{pathToDatabase}'")
+            print(f"Connected! Current path is <{pathToDatabase}>")
             # move to login screen
             self.reframe(tkw.LoginFrame)
         else:
-            print(f"Not connected! Current path is '{pathToDatabase}'")
+            print(f"Not connected! Current path is <{pathToDatabase}>")
             # move to database browser
             self.reframe(tkw.DatabaseBrowserFrame)
+            print("oof")
 
         if not self.__inMainloop:
             self.__inMainloop = True
@@ -53,5 +61,5 @@ def main():
     App()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
