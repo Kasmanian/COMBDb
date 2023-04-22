@@ -1,4 +1,5 @@
 import pyodbc
+from constants import DATABASE_DEFINITION
 
 
 class Database:
@@ -31,6 +32,7 @@ class Database:
             self.db = pyodbc.connect(
                 r"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + accdbPath
             )
+            self.validate()
             return True
         except (Exception, pyodbc.Error) as e:
             self.error = e
@@ -103,6 +105,17 @@ class Database:
         for row in rows:
             dataExport.append(dict(zip(fields, list(row))))
         return dataExport
+
+    @__query
+    def validate(self, cursor: pyodbc.Cursor):
+        requiredTables = DATABASE_DEFINITION.keys()
+        for table in requiredTables:
+            if cursor.tables(table=table).fetchone():
+                print(f"table {table} found")
+                for row in cursor.columns(table=table):
+                    if row.column_name in DATABASE_DEFINITION[table]:
+                        if row.type_name == DATABASE_DEFINITION[table][row.column_name]:
+                            print(f"{row.column_name}: {row.type_name}")
 
     def generateSampleID(self, year: int):
         """Generates a new non-colliding sample ID sourced from an index in the database.

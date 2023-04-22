@@ -16,7 +16,7 @@ class App(tk.Tk):
         self.EM = const.EM
 
         # database validation & login
-        self.__inMainloop = False
+        self.inMainloop = False
         self.run()
 
     def get_database_path(self):
@@ -50,10 +50,9 @@ class App(tk.Tk):
             print(f"Not connected! Current path is <{pathToDatabase}>")
             # move to database browser
             self.reframe(tkw.DatabaseBrowserFrame)
-            print("oof")
 
-        if not self.__inMainloop:
-            self.__inMainloop = True
+        if not self.inMainloop:
+            self.inMainloop = True
             self.mainloop()
 
 
