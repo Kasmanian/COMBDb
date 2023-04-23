@@ -3,6 +3,9 @@ from constants import DATABASE_DEFINITION
 
 
 class Database:
+    def __init__(self):
+        self.error = None
+
     def __query(func):
         """Decorator for grabbing/closing a cursor and catching database errors."""
 
@@ -14,8 +17,11 @@ class Database:
                 self.db.commit()
                 return result
             except (Exception, pyodbc.Error) as e:
-                self.error = e
-                print(str(e))
+                errorCodeKey = {"insert": 3, "update": 4, "select": 5, "validate": 6}
+                errorCode = errorCodeKey[func.__name__]
+                self.logError(errorCode, str(e))
+                # print(str(e))
+                return None
             finally:
                 if cursor:
                     cursor.close()
@@ -32,16 +38,22 @@ class Database:
             self.db = pyodbc.connect(
                 r"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + accdbPath
             )
-            self.validate()
-            return True
+            return self.validate()
         except (Exception, pyodbc.Error) as e:
-            self.error = e
+            self.logError(2, str(e))
             return False
 
     def close(self):
         """Closes the connection to the database if one exists."""
         if self.db:
             self.db.close()
+
+    def logError(self, code, message):
+        self.error = {"code": code, "message": message}
+        return False
+
+    def resolveError(self):
+        self.error = None
 
     @__query
     def insert(self, cursor: pyodbc.Cursor, table: str, fields: tuple, *args: any):
@@ -110,12 +122,25 @@ class Database:
     def validate(self, cursor: pyodbc.Cursor):
         requiredTables = DATABASE_DEFINITION.keys()
         for table in requiredTables:
+            # check if table exists...
             if cursor.tables(table=table).fetchone():
-                print(f"table {table} found")
+                # iterate through the rows of matching table...
                 for row in cursor.columns(table=table):
+                    # verify rows match the required rows...
                     if row.column_name in DATABASE_DEFINITION[table]:
-                        if row.type_name == DATABASE_DEFINITION[table][row.column_name]:
-                            print(f"{row.column_name}: {row.type_name}")
+                        # verify matching rows match the required datatypes for those rows...
+                        if row.type_name != DATABASE_DEFINITION[table][row.column_name]:
+                            return self.logError(
+                                2,
+                                f"field {row.column_name} in {table} is not of type {DATABASE_DEFINITION[table][row.column_name]}",
+                            )
+                    else:
+                        return self.logError(
+                            2, f"field {row.column_name} not in {table}"
+                        )
+            else:
+                return (2, f"table {table} not found")
+        return True
 
     def generateSampleID(self, year: int):
         """Generates a new non-colliding sample ID sourced from an index in the database.

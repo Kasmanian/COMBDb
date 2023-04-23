@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, TclError
 
 import _modules as m
 import constants as const
@@ -18,6 +18,9 @@ class App(tk.Tk):
         # database validation & login
         self.inMainloop = False
         self.run()
+
+    def get_database_error(self):
+        return self.__database.error
 
     def get_database_path(self):
         # validate json and get database path from it
@@ -54,6 +57,10 @@ class App(tk.Tk):
         if not self.inMainloop:
             self.inMainloop = True
             self.mainloop()
+
+    def end(self):
+        self.__database.close()
+        self.destroy()
 
 
 def main():

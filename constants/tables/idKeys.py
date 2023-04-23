@@ -2,7 +2,7 @@
 from .__utils import *
 
 # table definition
-IDKEY_TABLE_NAME = "CATs"
+IDKEY_TABLE_NAME = "IDKeys"
 IDKEY_DEFINITION = {
     "Entry": "COUNTER",
     # AutoNumber: unique incrementing entry #

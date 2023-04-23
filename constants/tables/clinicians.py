@@ -4,7 +4,7 @@ from .__utils import *
 # table definition
 CLINICIAN_TABLE_NAME = "Clinicians"
 CLINICIAN_DEFINITION = {
-    "Entry": "COUNT",
+    "Entry": "COUNTER",
     # AutoNumber: unique incrementing entry #
     "Title": "VARCHAR",
     # Short Text: title of the clinician

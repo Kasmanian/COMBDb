@@ -14,9 +14,13 @@ class DatabaseBrowserFrame(BorderlessFrame):
         # define user interface items
         statusLabelText = "Current COMBDb.accdb file"
         pathToDatabase = master.get_database_path()
+        databaseError = master.get_database_error()
         if pathToDatabase is None:
             pathToDatabase = "Select a COMBDb.accdb file"
             statusLabelText = "No database file in path"
+        elif databaseError:
+            if databaseError["code"] == 2:
+                statusLabelText = "Invalid database selected"
         self.statusLabel = ttk.Label(self, text=statusLabelText)
         self.statusLabel.pack()
         self.databaseEntry = InfoEntry(self, int(2 * master.EM))
@@ -26,7 +30,7 @@ class DatabaseBrowserFrame(BorderlessFrame):
         self.openButton.pack()
         self.browseButton = ttk.Button(self, text="Browse...", command=self.browse)
         self.browseButton.pack()
-        self.exitButton = ttk.Button(self, text="Exit", command=master.destroy)
+        self.exitButton = ttk.Button(self, text="Exit", command=master.end)
         self.exitButton.pack()
 
         # center and set attributes

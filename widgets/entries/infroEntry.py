@@ -4,6 +4,7 @@ from tkinter import ttk
 class InfoEntry(ttk.Entry):
     def __init__(self, master, span=0):
         ttk.Entry.__init__(self, master)
+        self.configure(font="TkFixedFont")
         if span > 0:
             self.configure(state="disabled", width=span)
         self.span = span
@@ -20,6 +21,6 @@ class InfoEntry(ttk.Entry):
         self.text = string
         displayText = string
         if len(string) > span > 6:
-            displayText = "..." + string[len(string) - (span - 4) :]
+            displayText = "..." + string[len(string) - (span - 3) :]
         self.insert(0, displayText)
         self.configure(state="disabled")

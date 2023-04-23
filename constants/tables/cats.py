@@ -17,11 +17,11 @@ CAT_DEFINITION = {
     "Last": "VARCHAR",
     # Short Text: last name of the patient
     "Clinician": "INTEGER",
-    # Number: 'Entry' field of the clinician (from Clinician table)
+    # Number: 'Entry' field of the clinician (from Clinicians table)
     "Collected": "DATETIME",
     # Date/Time: date the sample was collected
     "Tech": "INTEGER",
-    # Number: 'Entry' field of this entry's last editing tech (from Tech table)
+    # Number: 'Entry' field of this entry's last editing tech (from Techs table)
     "Received": "DATETIME",
     # Date/Time: date the sample was received
     "Reported": "DATETIME",
