@@ -4,8 +4,6 @@ from tkinter import ttk
 class BorderlessFrame(ttk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
-        # remove titlebar
-        master.overrideredirect(True)
 
     def center(self):
         # get app

@@ -1,5 +1,7 @@
 import tkinter as tk
-from tkinter import ttk, TclError
+from tkinter import TclError, ttk
+
+# import sv_ttk
 
 import _modules as m
 import constants as const
@@ -14,6 +16,7 @@ class App(tk.Tk):
         self.__mainframe = None
         self.title(const.TITLE)
         self.EM = const.EM
+        # sv_ttk.use_dark_theme()
 
         # database validation & login
         self.inMainloop = False

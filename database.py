@@ -5,6 +5,7 @@ from constants import DATABASE_DEFINITION
 class Database:
     def __init__(self):
         self.error = None
+        self.db = None
 
     def __query(func):
         """Decorator for grabbing/closing a cursor and catching database errors."""
