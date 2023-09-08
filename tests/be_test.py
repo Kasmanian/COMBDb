@@ -12,7 +12,7 @@ db = Database()
 class TestDatabase(unittest.TestCase):
     def test_connect_failed(self):
         isConnected = db.connect("")
-        self.assertEqual(isConnected, False, "Connection should return False")
+        self.assertEqual(isConnected, False, "Connection should return <False>")
 
     def test_connect_passed(self):
         shutil.copyfile(const.ACCDB_PATH, const.ACCDB_TEST_PATH)
@@ -67,16 +67,17 @@ class TestDatabase(unittest.TestCase):
         sampleID = db.generateSampleID(crntDate.year)
         status = db.insert(
             const.CAT_TABLE_NAME,
-            const.CAT_RESULTS_FIELDS_SUBSET,
+            const.CAT_RESULTS_FIELDS,
             sampleID,
             "0000a",
-            0,
+            "Test",
             "John",
             "Doe",
-            crntDate,
-            crntDate,
+            0,
             crntDate,
             0,
+            crntDate,
+            crntDate,
             0,
             0,
             0,
@@ -86,72 +87,36 @@ class TestDatabase(unittest.TestCase):
             0,
             "Hello",
             "World",
-            "Test",
             crntDate,
             "N/A",
         )
         self.assertEqual(status, True, "Insert should return <True>")
 
     def test_single_insert_culture(self):
-        table = "[Cultures]"
-        fields = (
-            "[SampleID]",
-            "[ChartID]",
-            "[Clinician]",
-            "[First]",
-            "[Last]",
-            "[Received]",
-            "[Collected]",
-            "[Reported]",
-            "[Aerobic Results]",
-            "[Anaerobic Results]",
-            "[Tech]",
-            "[Comments]",
-            "[Notes]",
-            "[Type]",
-            "[Direct Smear]",
-            "[Rejection Date]",
-            "[Rejection Reason]",
-        )
         crntDate = date.today()
         sampleID = db.generateSampleID(crntDate.year)
         status = db.insert(
-            table,
-            fields,
+            const.CULTURE_TABLE_NAME,
+            const.CULTURE_RESULTS_FIELDS,
             sampleID,
             "0000a",
-            0,
+            "Test",
             "John",
             "Doe",
-            crntDate,
-            crntDate,
-            crntDate,
-            "N/A",
-            "N/A",
             0,
+            crntDate,
+            0,
+            crntDate,
+            crntDate,
+            "N/A",
+            "N/A",
             "Hello",
             "World",
-            "Test",
-            "...",
+            "!!!",
             crntDate,
             "N/A",
         )
-        self.assertEqual(status, True, 'Insert should return "True"')
-
-    # def test_single_insert_waterline(self):
-    #     table = '[Waterlines]'
-    #     fields = (
-    #         '[SampleID]', '[ChartID]', '[Clinician]', '[First]', '[Last]',
-    #         '[Received]', '[Collected]', '[Reported]', '[Aerobic Results]', '[Anaerobic Results]',
-    #         '[Tech]', '[Comments]', '[Notes]', '[Type]', '[Direct Smear]', '[Rejection Date]', '[Rejection Reason]'
-    #     )
-    #     crntDate = date.today()
-    #     sampleID = db.generateSampleID(crntDate.year)
-    #     status = db.insert(
-    #         table, fields, sampleID, '0000a', 0, 'John', 'Doe', crntDate, crntDate, crntDate,
-    #         'N/A', 'N/A', 0, 'Hello', 'World', 'Test', '...', crntDate, 'N/A'
-    #     )
-    #     self.assertEqual(status, True, 'Insert should return "True"')
+        self.assertEqual(status, True, "Insert should return <True>")
 
 
 if __name__ == "__main__":

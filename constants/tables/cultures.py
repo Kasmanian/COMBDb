@@ -28,7 +28,7 @@ CULTURE_DEFINITION = {
     # Date/TIme: date the sample was reported
     "Aerobic Results": "LONGCHAR",
     # Long Text: codified string of aerobic bacteria and antibiotics observed/tested
-    "Aerotolerant Results": "LONGCHAR",
+    "Anaerobic Results": "LONGCHAR",
     # Long Text: codified string of aerotolerant bacteria and antibiotics observed/tested
     "Comments": "LONGCHAR",
     # Long Text: comments to be seen on printed reports
@@ -44,6 +44,6 @@ CULTURE_DEFINITION = {
 CULTURE_TABLE_COLUMNS = tuple(CULTURE_DEFINITION.keys())
 
 # field subsets
-CULTURE_ORDER_FIELDS_SUBSET = QWARG_FORMAT(CULTURE_TABLE_COLUMNS[1:8])
-CULTURE_ALL_FIELDS_SUBSET = QWARG_FORMAT(CULTURE_TABLE_COLUMNS)
-CULTURE_RESULTS_FIELDS_SUBSET = CULTURE_ALL_FIELDS_SUBSET[1:]
+CULTURE_ORDER_FIELDS = QWARG_FORMAT(CULTURE_TABLE_COLUMNS[1:8])
+CULTURE_ALL_FIELDS = QWARG_FORMAT(CULTURE_TABLE_COLUMNS)
+CULTURE_RESULTS_FIELDS = CULTURE_ALL_FIELDS[1:]

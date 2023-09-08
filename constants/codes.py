@@ -12,3 +12,10 @@ DATABASE_ERROR_CODES = [
     "SELECT failed",  # 5
     "Database validation interrupted",  # 6
 ]
+
+DATABASE_ERROR_KEYS = {
+    "insert": 3,
+    "update": 4,
+    "select": 5,
+    "validate": 6,
+}

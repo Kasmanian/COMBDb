@@ -1,5 +1,5 @@
 import pyodbc
-from constants import DATABASE_DEFINITION
+from constants import DATABASE_DEFINITION, DATABASE_ERROR_KEYS
 
 
 class Database:
@@ -18,10 +18,8 @@ class Database:
                 self.db.commit()
                 return result
             except (Exception, pyodbc.Error) as e:
-                errorCodeKey = {"insert": 3, "update": 4, "select": 5, "validate": 6}
-                errorCode = errorCodeKey[func.__name__]
+                errorCode = DATABASE_ERROR_KEYS[func.__name__]
                 self.logError(errorCode, str(e))
-                # print(str(e))
                 return None
             finally:
                 if cursor:
@@ -41,7 +39,7 @@ class Database:
             )
             return self.validate()
         except (Exception, pyodbc.Error) as e:
-            self.logError(2, str(e))
+            self.logError(1, str(e))
             return False
 
     def close(self):
@@ -51,7 +49,7 @@ class Database:
 
     def logError(self, code, message):
         self.error = {"code": code, "message": message}
-        return False
+        print(f"ERROR [{code}]: {message}")
 
     def resolveError(self):
         self.error = None
