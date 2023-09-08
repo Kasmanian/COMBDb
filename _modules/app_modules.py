@@ -30,13 +30,12 @@ from database import Database
 #         return args
 
 
-class Indexer():
+class Indexer:
     def __init__(self, adb: Database, qwargs: dict, fields: list):
         self.adb = adb
         self.qwargs = qwargs
         self.fields = fields
         self.update()
-
 
     def update(self):
         self.payload = self.adb.select(**self.qwargs)
@@ -44,11 +43,10 @@ class Indexer():
         for i in range(0, len(self.payload)):
             row = self.payload[i]
             for field in self.fields:
-                if i<1:
+                if i < 1:
                     self.indexes[field][row[field]] = [i]
                 else:
                     self.indexes[field][row[field]].append(i)
-
 
     def subset(self, field: str, value: any):
         subset = []
@@ -56,10 +54,9 @@ class Indexer():
             subset.append(self.payload[index])
         return subset
 
-
     def recast(self, inField: str, value: any, outField: str):
         return self.indexes[inField][value][0][outField]
-    
+
 
 # def create_demo(resetOnCall=False):
 #     cwd = os.getcwd()
@@ -70,6 +67,7 @@ class Indexer():
 #         print('Loading previously initialized demo...')
 #     return demoFilePath
 
+
 def validate_json(pathToJson: str):
     """Validates if .json exists or creates one."""
     try:
@@ -78,15 +76,16 @@ def validate_json(pathToJson: str):
     except:
         pass
 
+
 def write_to_json(pathToJson: str, keysToUnpack: list, val):
     """Writes to a .json file."""
     data = None
     with open(pathToJson, "r") as j:
         data = json.load(j)
     temp = data
-    for i in range(0, len(keysToUnpack)-1):
+    for i in range(0, len(keysToUnpack) - 1):
         key = keysToUnpack[i]
-        if key not in temp[key]:
+        if key not in temp:
             temp[key] = {}
         temp = temp[key]
     temp[keysToUnpack[-1]] = val

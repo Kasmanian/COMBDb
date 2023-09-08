@@ -16,7 +16,7 @@ class LoginFrame(BorderlessFrame):
         usernameInput = None
         passwordInput = None
         loginButton = None  # takes the user's credintials and logs in
-        exitButton = ttk.Button(self, text="Exit", command=master.destroy)
+        exitButton = ttk.Button(self, text="Exit", command=master.end)
         exitButton.pack()
         msgLabel = None  # displays error or validation notification
 
